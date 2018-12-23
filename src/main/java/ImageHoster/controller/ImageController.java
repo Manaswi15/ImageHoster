@@ -50,6 +50,7 @@ public class ImageController {
         Image image = imageService.getImage(id);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        model.addAttribute("comments",image.getComments());
         return "images/image";
     }
 
@@ -77,7 +78,6 @@ public class ImageController {
         newImage.setUser(user);
         String uploadedImageData = convertUploadedFileToBase64(file);
         newImage.setImageFile(uploadedImageData);
-
         List<Tag> imageTags = findOrCreateTags(tags);
         newImage.setTags(imageTags);
         newImage.setDate(new Date());
@@ -99,6 +99,7 @@ public class ImageController {
 
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        model.addAttribute("comments",image.getComments());
         //Check if the user is owner of the image
         if(!user.equals(imageOwner))
         {
@@ -140,7 +141,6 @@ public class ImageController {
         updatedImage.setUser(user);
         updatedImage.setTags(imageTags);
         updatedImage.setDate(new Date());
-
         imageService.updateImage(updatedImage);
         return "redirect:/images/" + updatedImage.getTitle();
     }
@@ -162,6 +162,7 @@ public class ImageController {
             model.addAttribute("image", image);
             model.addAttribute("tags", image.getTags());
             model.addAttribute("deleteError",error);
+            model.addAttribute("comments",image.getComments());
             return "images/image";
         }else {
             imageService.deleteImage(imageId);
